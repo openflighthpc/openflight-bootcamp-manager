@@ -184,7 +184,7 @@ function deploy_cluster() {
     console=$(ssh -o StrictHostKeyChecking=no $ip 'su - flight /opt/flight/bin/flight desktop start xterm' |grep -v '^Last login')
     port=$(echo "$console" |grep '^Port' | awk '{print $2}')
     pass=$(echo "$console" |grep '^Password' |awk '{print $2}')
-    echo "$clustername-console: $ip:5901" >> $TOKENFILE
+    echo "$clustername-console: $ip:$port" >> $TOKENFILE
     echo "  console:" >> $clusterconf
     echo "    port: $port" >> $clusterconf
     echo "    pass: $pass" >> $clusterconf
@@ -193,7 +193,7 @@ function deploy_cluster() {
     desktop=$(ssh -o StrictHostKeyChecking=no $ip 'su - flight /opt/flight/bin/flight desktop start gnome' |grep -v '^Last login')
     port=$(echo "$desktop" |grep '^Port' | awk '{print $2}')
     pass=$(echo "$desktop" |grep '^Password' |awk '{print $2}')
-    echo "$clustername-desktop: $ip:5901" >> $TOKENFILE
+    echo "$clustername-desktop: $ip:$port" >> $TOKENFILE
     echo "  desktop:" >> $clusterconf
     echo "    port: $port" >> $clusterconf
     echo "    pass: $pass" >> $clusterconf
