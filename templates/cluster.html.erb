@@ -1,0 +1,47 @@
+<head>
+    <!-- Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/e80bdf23c5.js" crossorigin="anonymous"></script>
+
+    <!-- Mobile Support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <a class="navbar-brand" href="/"><img src="img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbar
+SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+	<span class="navbar-text">
+      <h2>Bootcamp <%= name %> - <%= @cluster['name'] %></h2>
+	</span>
+
+    </nav>
+
+    <br />
+    <div class="row container-fluid text-center">
+      <h2>General Cluster Information</h2>
+      <h3><b>Gateway IP:</b> <%= @cluster['ip'] %></h3>
+      <h3><b>SSH User:</b> flight</h3>
+      <h3><b>User Password:</b> <%= @cluster['password'] %></h3>
+      <br />
+      <h2>VNC Connection Information</h2>
+      <%= @cluster['vnc'].each do |type, info| %>
+        <h3><b>Session Type:</b> <%= type %></h3>
+        <h3><b>Session Password:</b> <%= info['pass'] %></h3>
+        <h3><b>Session Port:</b> <%= info['port'] %></h3>
+        <br >
+      <% end %>
+      <h2>Web VNC</h2>
+      <p>Below are links that launch web VNC sessions for this cluster</p>
+    </div>
+</body>
+

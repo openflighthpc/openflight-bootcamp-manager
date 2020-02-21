@@ -1,0 +1,98 @@
+<head>
+    <!-- Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/e80bdf23c5.js" crossorigin="anonymous"></script>
+
+    <!-- Mobile Support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Javascript -->
+    <script src="include/util.js"></script>
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <a class="navbar-brand" href="/"><img src="img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbar
+SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+	<span class="navbar-text">
+      <h2>Web VNC: <%= @cluster['name'] %> <%= type %></h2>
+	</span>
+
+    </nav>
+
+    <br />
+
+    <div class="row container-fluid">
+        <div class="col-xl-9">
+	    <canvas id="noVNC_canvas" width="640px" height="20px">
+		    Canvas not supported.
+	    </canvas>
+        </div>
+        <div class="col-xl-3">
+	    <div class="vnc-right">
+		<h3>How I Do It?</h3>
+		<p>Well just click on the box and type things, that's it, that's all you need to do in order to get use the command line.</p>
+		<p>U SO PRO!</p>
+	    </div>
+        </div>
+    </div>
+
+    <!-- Javascript Magic -->
+    <script>
+    "use strict";
+
+    // Load supporting scripts
+    Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
+                       "keysymdef.js", "keyboard.js", "input.js", "display.js",
+                       "jsunzip.js", "rfb.js", "keysym.js"]);
+
+    var rfb;
+
+    function xvpInit(ver) {
+        var xvpbuttons;
+        xvpbuttons = $D('noVNC_xvp_buttons');
+        if (ver >= 1) {
+            xvpbuttons.style.display = 'inline';
+        } else {
+            xvpbuttons.style.display = 'none';
+        }
+    }
+
+    window.onscriptsload = function () {
+        var host, port, password, path, token;
+
+        WebUtil.init_logging(WebUtil.getQueryVar('logging', 'warn'));
+      document.title = '<%= @cluster['name'] %>';
+        host = WebUtil.getQueryVar('host', window.location.hostname);
+        port = 8080;
+      password = '<%= info['pass'] %>';
+      token = '<%= @cluster['name'] %>-<%= type %>';
+      path = '?token=<%= @cluster['name'] %>-<%= type %>';
+
+            // If a token variable is passed in, set the parameter in a cookie.
+            // This is used by nova-novncproxy.
+            if (token) {
+                WebUtil.createCookie('token', token, 1)
+            }
+
+            rfb = new RFB({'target':       $D('noVNC_canvas'),
+                           'encrypt':      WebUtil.getQueryVar('encrypt',
+                                    (window.location.protocol === "https:")),
+                           'repeaterID':   WebUtil.getQueryVar('repeaterID', ''),
+                           'true_color':   WebUtil.getQueryVar('true_color', true),
+                           'local_cursor': WebUtil.getQueryVar('cursor', true),
+                           'shared':       WebUtil.getQueryVar('shared', true),
+                           'view_only':    WebUtil.getQueryVar('view_only', false),
+                           'onXvpInit':    xvpInit});
+            Util.Warn('Running rfb.connect(' + host + ', ' + port + ', ' + password + ', ' + path);
+            rfb.connect(host, port, password, path);
+        };
+        </script>
+</body>
