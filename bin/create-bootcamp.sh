@@ -110,7 +110,8 @@ fi
 #done
 
 ## Ensure name isn't an existing bootcamp session
-SESSIONCONF="$DIR/sessions/$NAME.yaml"
+SESSIONDIR="$DIR/sessions/$NAME/"
+SESSIONCONF="$SESSIONDIR/session.yaml"
 if [[ -f $SESSIONCONF ]] ; then
     echo "A bootcamp session called $NAME already exists ($SESSIONCONF)"
     exit 1
@@ -147,7 +148,7 @@ WEBROOT="$DIR/site/$NAME" # TODO: Use the webroot arg here
 TOKENFILE="$WEBROOT/tokens.list"
 
 # Create directories
-mkdir -p $SESSIONLOGDIR $WEBROOT
+mkdir -p $SESSIONDIR $SESSIONLOGDIR $WEBROOT
 
 # Log session info
 echo "name: $NAME" > $SESSIONCONF
@@ -159,7 +160,7 @@ echo "configurations: $CONFIG" >> $SESSIONCONF
 function deploy_cluster() {
     clustername="group$number"
     clusterlog="$SESSIONLOGDIR/$clustername.log"
-    clusterconf="$SESSIONLOGDIR/$clustername.yaml"
+    clusterconf="$SESSIONDIR/$clustername.yaml"
     echo "$clustername: Starting deployment"
 
     # Determine which config to use
