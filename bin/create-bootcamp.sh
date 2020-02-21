@@ -218,3 +218,7 @@ done
 
 echo "Waiting for clusters to deploy"
 wait
+
+echo "Generating website to $WEBROOT"
+ruby bin/generate-site.rb
+echo "Done."
