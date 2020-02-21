@@ -135,9 +135,9 @@ case "$response" in
 esac
 
 # Some variables
-CONFIGLIST="$(echo "$CONFIG" |tr ',' '\n')"
-CONFIGCOUNT="$(echo "$CONFIGLIST" |wc -l)"
-CONFIGNUMBER=1 # incremented to loop through configs
+export CONFIGLIST="$(echo "$CONFIG" |tr ',' '\n')"
+export CONFIGCOUNT="$(echo "$CONFIGLIST" |wc -l)"
+export CONFIGNUMBER=1 # incremented to loop through configs
 
 #MODULECOUNT="$(echo "$MODULES" |tr ',' '\n' |wc -l)"
 
@@ -178,25 +178,24 @@ function deploy_cluster() {
 
     # Add VNC to session configuration info
     echo "vnc:" >> $clusterconf
-    
-    desktops="$(ssh $ip "su - flight /opt/flight/bin/flight desktop list" |grep -v '^Last login' |tac)"
-    while IFS= read -r desktop ; do
-        tmp=$(echo "$desktop" |awk '{print $2}')
-        case $tmp in
-            "xterm"|"terminal")
-                type="console"
-                ;;
-            *)
-                type="desktop"
-                ;;
-        esac
-        port=$(echo "$desktop" |awk '{print $6}')
-        pass=$(echo "$desktop" |awk '{print $8}')
-        echo "$clustername-$type: $ip:$port" >> $TOKENFILE
-        echo "  $type:" >> $clusterconf
-        echo "    port: $port" >> $clusterconf
-        echo "    pass: $pass" >> $clusterconf
-    done <<< "$desktops"
+
+    # Launch xterm desktop
+    console=$(ssh $ip 'su - flight /opt/flight/bin/flight desktop start xterm' |grep -v '^Last login')
+    port=$(echo "$console" |grep '^Port' | awk '{print $2}')
+    pass=$(echo "$console" |grep '^Password' |awk '{print $2}')
+    echo "$clustername-console: $ip:5901" >> $TOKENFILE
+    echo "  console:" >> $clusterconf
+    echo "    port: $port" >> $clusterconf
+    echo "    pass: $pass" >> $clusterconf
+
+    # Launch gnome desktop
+    desktop=$(ssh $ip 'su - flight /opt/flight/bin/flight desktop start gnome' |grep -v '^Last login')
+    port=$(echo "$desktop" |grep '^Port' | awk '{print $2}')
+    pass=$(echo "$desktop" |grep '^Password' |awk '{print $2}')
+    echo "$clustername-desktop: $ip:5901" >> $TOKENFILE
+    echo "  console:" >> $clusterconf
+    echo "    port: $port" >> $clusterconf
+    echo "    pass: $pass" >> $clusterconf
 
     echo "$clustername: Finished deployment"
 }
