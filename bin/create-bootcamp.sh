@@ -50,7 +50,7 @@ while [[ $# -gt 0 ]] ; do
             shift && shift
             ;;
         -e|--environment)
-            COUNT="$2"
+            export COUNT="$2"
             shift && shift
             ;;
 #        -m|--modules)
@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]] ; do
 #            shift && shift
 #            ;;
         -n|--name)
-            NAME="$2"
+            export NAME="$2"
             shift && shift
             ;;
         -w|--webroot)
@@ -110,7 +110,7 @@ fi
 #done
 
 ## Ensure name isn't an existing bootcamp session
-SESSIONDIR="$DIR/sessions/$NAME/"
+export SESSIONDIR="$DIR/sessions/$NAME/"
 SESSIONCONF="$SESSIONDIR/session.yaml"
 if [[ -f $SESSIONCONF ]] ; then
     echo "A bootcamp session called $NAME already exists ($SESSIONCONF)"
