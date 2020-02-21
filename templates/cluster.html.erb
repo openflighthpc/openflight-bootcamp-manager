@@ -13,7 +13,7 @@
 <body>
     <!-- Main Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <a class="navbar-brand" href="/"><img src="img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
+        <a class="navbar-brand" href="/"><img src="/img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbar
 SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,20 +28,27 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
     <br />
     <div class="row container-fluid text-center">
-      <h2>General Cluster Information</h2>
-      <h3><b>Gateway IP:</b> <%= @cluster['ip'] %></h3>
-      <h3><b>SSH User:</b> flight</h3>
-      <h3><b>User Password:</b> <%= @cluster['password'] %></h3>
-      <br />
-      <h2>VNC Connection Information</h2>
-      <%= @cluster['vnc'].each do |type, info| %>
-        <h3><b>Session Type:</b> <%= type %></h3>
-        <h3><b>Session Password:</b> <%= info['pass'] %></h3>
-        <h3><b>Session Port:</b> <%= info['port'] %></h3>
-        <br >
-      <% end %>
-      <h2>Web VNC</h2>
-      <p>Below are links that launch web VNC sessions for this cluster</p>
+      <div class="col-xl-4">
+	      <h2>General Cluster Information</h2>
+	      <p><b>Gateway IP:</b> <%= @cluster['ip'] %><br />
+	      <b>SSH User:</b> flight<br />
+	      <b>User Password:</b> <%= @cluster['password'] %></p>
+      </div>
+      <div class="col-xl-8">
+	      <h2>VNC Connection Information</h2>
+              <p>Using a VNC client, the console or desktop can be connected to with the following details</p>
+            <div class="row">
+	      <% @cluster['vnc'].each do |type, info| %>
+              <div class="col-xl-6">
+		<p><b>Session Type:</b> <%= type %><br />
+		<b>Session Password:</b> <%= info['pass'] %></br >
+		<b>Session Port:</b> <%= info['port'] %></p>
+                <p>For mac users, enter vnc://flight:<%= info['pass'] %>@<%= @cluster['ip'] %>:<%= info['port'] %> into spotlight</p>
+                <p>If you're experiencing difficulty connecting from a VNC client, <a href="/<%= @cluster['name'] %>/<%= type %>.html">click here</a> to be connected to the <%= type %></p>
+	      </div>
+	      <% end %>
+         </div>
+      </div>
     </div>
 </body>
 

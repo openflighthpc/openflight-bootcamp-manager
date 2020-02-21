@@ -1,6 +1,8 @@
 <head>
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/e80bdf23c5.js" crossorigin="anonymous"></script>
@@ -9,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Javascript -->
-    <script src="include/util.js"></script>
+    <script src="/include/util.js"></script>
 </head>
 <body>
     <!-- Main Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <a class="navbar-brand" href="/"><img src="img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
+        <a class="navbar-brand" href="/"><img src="/img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbar
 SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +24,7 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         </button>
 
 	<span class="navbar-text">
-      <h2>Web VNC: <%= @cluster['name'] %> <%= type %></h2>
+      <h2>Web VNC: <%= @cluster['name'] %> <%= @type %></h2>
 	</span>
 
     </nav>
@@ -37,9 +39,9 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         </div>
         <div class="col-xl-3">
 	    <div class="vnc-right">
-		<h3>How I Do It?</h3>
-		<p>Well just click on the box and type things, that's it, that's all you need to do in order to get use the command line.</p>
-		<p>U SO PRO!</p>
+		<h3>Welcome to your Web VNC Session</h3>
+		<p>This page allows for web-based VNC access to the cluster.</p>
+                <p>In the event that VNC connections freeze up/become unresponsive, refresh this page</p>
 	    </div>
         </div>
     </div>
@@ -49,6 +51,7 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     "use strict";
 
     // Load supporting scripts
+    var INCLUDE_URI = '/include/'
     Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
                        "keysymdef.js", "keyboard.js", "input.js", "display.js",
                        "jsunzip.js", "rfb.js", "keysym.js"]);
@@ -72,9 +75,9 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       document.title = '<%= @cluster['name'] %>';
         host = WebUtil.getQueryVar('host', window.location.hostname);
         port = 8080;
-      password = '<%= info['pass'] %>';
-      token = '<%= @cluster['name'] %>-<%= type %>';
-      path = '?token=<%= @cluster['name'] %>-<%= type %>';
+      password = '<%= @info['pass'] %>';
+      token = '<%= @cluster['name'] %>-<%= @type %>';
+      path = '?token=<%= @cluster['name'] %>-<%= @type %>';
 
             // If a token variable is passed in, set the parameter in a cookie.
             // This is used by nova-novncproxy.

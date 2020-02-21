@@ -9,11 +9,27 @@
 
     <!-- Mobile Support -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        min-height: 100vh;
+    }
+    .fa-card-img {
+        text-align: center;
+        padding-top: 2rem;
+    }
+    @media only screen and (min-width: 1200px) {
+        .pb-3, .card-body {
+            display: flex!important;
+        }
+    }
+    </style>
 </head>
 <body>
     <!-- Main Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <a class="navbar-brand" href="/"><img src="img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
+        <a class="navbar-brand" href="/"><img src="/img/openflight-logo.png" alt="openflightHPC Logo" height="75"></img></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbar
 SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,8 +52,12 @@ SupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="fa-card-img fa fa-4x fa-desktop"></span>
                         <div class="card-body flex-column">
                             <h5 class="card-title" style="text-align: center"><%= cluster %></h5>
-<% cluster['vnc'].each do |type, details| %>
-                                <a href="http://bootcamp.openflighthpc.org:8080/vnc_auto.html?path=?token=<%= cluster %>-<%= type %>&password=<%= details['pass'] %>" class="btn btn-primary mt-auto" style="width: 100%;margin-bottom: 16px">
+                                <a href="/<%= cluster %>.html" class="btn btn-primary mt-auto" style="width: 100%;margin-bottom: 16px">
+                                    <span class="btn-card-link">Cluster Information</span>
+                                    <span class="fa fa-2x fa-info-circle" style="float:right"></span>
+                                </a>
+<% info['vnc'].each do |type, details| %>
+                                <a href="/<%= cluster %>/<%= type %>.html" class="btn btn-primary mt-auto" style="width: 100%;margin-bottom: 16px">
                                     <span class="btn-card-link">Connect to <%= type %></span>
                                     <span class="fa fa-2x fa-desktop" style="float:right"></span>
                                 </a>
