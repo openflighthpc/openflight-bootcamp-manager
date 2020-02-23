@@ -144,7 +144,7 @@ export CONFIGNUMBER=1 # incremented to loop through configs
 
 SESSIONLOGDIR="$DIR/log/$NAME"
 
-WEBROOT="$DIR/site/$NAME" # TODO: Use the webroot arg here
+export WEBROOT="$DIR/site/$NAME" # TODO: Use the webroot arg here
 TOKENFILE="$WEBROOT/tokens.list"
 
 # Create directories
