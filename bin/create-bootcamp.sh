@@ -155,6 +155,8 @@ echo "name: $NAME" > $SESSIONCONF
 echo "environments: $COUNT" >> $SESSIONCONF
 echo "configurations: $CONFIG" >> $SESSIONCONF
 #echo "modules: $MODULES" >> $SESSIONCONF
+echo "webroot: $WEBROOT" >> $SESSIONCONF
+echo "sessiondir: $SESSIONDIR" >> $SESSIONCONF
 
 # Function for cluster deployment to allow for loop to easily background
 function deploy_cluster() {
